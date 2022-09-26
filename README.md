@@ -78,7 +78,7 @@ Bridges can be centralized or decentralized.
 **Decentralized bridges** are those in which there is no entity managing the tokens, but is fully controlled by the smart contracts. These bridges are not trusted since the security of the bridge will be the same as that of the blockchain on which it runs. In this case the user has control over their tokens.
 
 - Operation:  
-- 
+
 For example pass 10 ERC20 tokens from a blockchain A to a blockchain B. As they are different blockchains, with different protocols, you cannot pass direct value from one to the other.
 So what the bridge will do is create contracts on both blockchains that can communicate in the same language through a blockchain oracle. 
 The bridge will specify the address that it will receive, in this case for blockchain B, and that it will send the 10 tokens to a vault that will be in blockchain A.
@@ -106,39 +106,44 @@ One of the best current solutions is decentralized oracles. The decentralized or
 
 ##### F)  What process (step by step) do you follow to build a protocol (a set of smart contracts) from given specifications?  
 
-Step 1: Identify a suitable use case
-Step 2: Identify the most suitable consensus mechanism.
-Step 3: Identify the most suitable platform (Blockchain)
-Step 4: Study on new solutions and similar solutions
-Step 5: Deconstruct the problem into action points
-Step 6: Implement them
-Step 7: Test the implementation
+Step 1: Identify a suitable use case  
+Step 2: Identify the most suitable consensus mechanism  
+Step 3: Identify the most suitable platform (Blockchain)  
+Step 4: Study on new solutions and similar solutions  
+Step 5: Deconstruct the problem into action points  
+Step 6: Implement them  
+Step 7: Test the implementation  
 
 
 ##### G)  After analyzing the file “Signature.sol”, describe the use case of this contract, how to use it and all the technical steps (off-chain & on-chain) & key methods of the contract.
 
-Steps:
-0 - message to sign
-1 - hash(message)
-2 - sign(hash(message), private key) / off-chain
-3 - ecrecover(hash(message), signature) == signer
-The purpose of the contract is to verify the signer.
-We pass to the verify() function as argument
-	- the signer
-	- the message
-	- the signature
-The first thing will be to hash the message in the getMessageHash() function using the cryptographic function keccak256 which takes a hexadecimal argument obtained by encoding the message with abi.encodePacked.
+Steps:  
+0 - message to sign  
+1 - hash(message)  
+2 - sign(hash(message), private key) / off-chain  
+3 - ecrecover(hash(message), signature) == signer  
+
+The purpose of the contract is to verify the signer.  
+We pass to the verify() function as argument  
+	- the signer  
+	- the message  
+	- the signature  
+	
+The first thing will be to hash the message in the getMessageHash() function using the cryptographic function keccak256 which takes a hexadecimal argument obtained by encoding the message with abi.encodePacked.  
+
 Then the resulting hash (bytes32) in the getEthSignedMessageHash() function adds the prefix "\x19Ethereum Signed Message:\n" to recognize it as an Ethereum specific signature. 
 After adding the prefix and along with the signature, the recoverSigner() function retrieves the signer and the signer must match the address of the signer of the message. 
-The recoverSigner() function uses a built in ecrecover() function that accepts the prefixed message hash and the ECDSA signature components, which consist of three parameters: r, s and v.
-r: first 32 bytes of the signature
-s: the second 32 bytes of the signature
-v: last 1 byte of the signature
+The recoverSigner() function uses a built in ecrecover() function that accepts the prefixed message hash and the ECDSA signature components, which consist of three parameters: r, s and v.  
+
+r: first 32 bytes of the signature  
+s: the second 32 bytes of the signature  
+v: last 1 byte of the signature  
+
 and returns the address used to sign the message.
 The signature to be received by the verify() function will be obtained out of the chain by signing with the wallet (Metamask) the hash of the message obtained by the getMessageHash() function.
 
 
-##### I)
+##### I)  How would you build a proxy contract where the implementation lives in another contract in solidity (do not worry about syntax error or mispel)
 
 A proxy contract is a contract that delegates calls to another contract and to interact with the actual contract it must go through the proxy and the proxy knows which contract to delegate the call to. It is possible to modify part or all of the contract.
 It is used to update contracts. The proxy contract remains immutable, but a new contract can be implemented behind it by simply changing the destination address.
