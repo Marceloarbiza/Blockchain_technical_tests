@@ -3,7 +3,7 @@
 `$ npm install` 
 
 ### Tests: 
-`$ npx hardhat test/<js test file>`
+`$ npx hardhat test test/<js test file>`
 
 ### Coverage:
 `$ npm install coverage`
